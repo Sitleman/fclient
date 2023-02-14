@@ -49,7 +49,7 @@ target_link_libraries( # Specifies the target library.
 
 add_library(spdlog STATIC IMPORTED)
 set_target_properties(spdlog PROPERTIES IMPORTED_LOCATION
-        /home/nikita/libs/spdlog/build/x86_64/libspdlog.a)
+        /home/nikita/libs/spdlog/build/arm64-v8a/libspdlog.a)
 target_include_directories(fclient PUBLIC
         /home/nikita/libs/spdlog/spdlog/include)
 
