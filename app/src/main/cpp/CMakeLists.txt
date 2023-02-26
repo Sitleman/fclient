@@ -43,17 +43,20 @@ find_library( # Sets the name of the path variable.
 target_link_libraries( # Specifies the target library.
         fclient
         spdlog
+        mbedcrypto
         # Links the target library to the log library
         # included in the NDK.
         ${log-lib})
 
 add_library(spdlog STATIC IMPORTED)
 set_target_properties(spdlog PROPERTIES IMPORTED_LOCATION
-        /home/nikita/libs/spdlog/build/arm64-v8a/libspdlog.a)
-target_include_directories(fclient PUBLIC
-        /home/nikita/libs/spdlog/spdlog/include)
+        /home/nikita/libs/spdlog/build/x86_64/libspdlog.a)
 
-#target_link_libraries(
-#        native-lib
-#        spdlog
-#        ${log-lib})
+
+add_library(mbedcrypto SHARED IMPORTED)
+set_target_properties(mbedcrypto PROPERTIES IMPORTED_LOCATION
+        ${CMAKE_CURRENT_SOURCE_DIR}/../nativeLibs/x86_64/libmbedcrypto.so)
+
+target_include_directories(fclient PUBLIC
+        /home/nikita/libs/spdlog/spdlog/include
+        /home/nikita/libs/mbedtls/mbedtls/include)
