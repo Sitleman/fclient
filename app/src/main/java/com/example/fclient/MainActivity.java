@@ -20,9 +20,15 @@ import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Hex;
 
 import java.nio.charset.StandardCharsets;
+import java.text.DecimalFormat;
 import java.util.Arrays;
 
-public class MainActivity extends AppCompatActivity {
+interface TransactionEvents {
+    String enterPin(int ptc, String amount);
+    void transactionResult(boolean result);
+}
+
+public class MainActivity extends AppCompatActivity implements TransactionEvents{
 
     ActivityResultLauncher activityResultLauncher;
 
@@ -33,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private ActivityMainBinding binding;
+    private String pin;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -41,64 +48,58 @@ public class MainActivity extends AppCompatActivity {
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        initRng();
 
-
-        activityResultLauncher  = registerForActivityResult(
+        activityResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 new ActivityResultCallback() {
                     @Override
                     public void onActivityResult(Object res) {
-                        ActivityResult result = (ActivityResult)res;
+                        ActivityResult result = (ActivityResult) res;
 //                        ActivityResult result;
                         if (result.getResultCode() == Activity.RESULT_OK) {
                             Intent data = result.getData();
-                            // обработка результата
-                            String pin = data.getStringExtra("pin");
-                            Toast.makeText(MainActivity.this, pin, Toast.LENGTH_SHORT).show();
+//                            обработка результата
+//                             pin = data.getStringExtra("pin");
+//                            Toast.makeText(MainActivity.this, pin, Toast.LENGTH_SHORT).show();
+                            pin = data.getStringExtra("pin");
+                            synchronized (MainActivity.this) {
+                                MainActivity.this.notifyAll();
+                            }
+
                         }
                     }
                 });
-
-        // Part 1. Test encrypt/decrypt
-//        int res = initRng();
-//        byte[] key = randomBytes(16);
-//
-//        String strKey = "1234567890123456";
-//        String strData = "Hello, World ;)";
-//        key = strKey.getBytes();
-//        byte[] data = strData.getBytes(StandardCharsets.UTF_8);
-//
-//        byte[] encData = encrypt(key, data);
-//        byte[] decData = decrypt(key, encData);
-//
-//        // Example of a call to a native method
-//        TextView tv = binding.sampleText;
-//        tv.setText(new String(data, StandardCharsets.UTF_8));
-////        tv.setText(Arrays.toString(data));
-//        tv.append("\n");
-////        tv.setText(new String(data, StandardCharsets.UTF_8));
-//        tv.append(Arrays.toString(encData));
-//        tv.append("\n");
-//        tv.append(new String(decData, StandardCharsets.UTF_8));
-////        tv.append(Arrays.toString(decData));
-
-
     }
 
-//    public void onButtonClick(View v)
-//    {
-//        byte[] key = stringToHex("0123456789ABCDEF0123456789ABCDE0");
-//        byte[] enc = encrypt(key, stringToHex("000000000000000102"));
-//        byte[] dec = decrypt(key, enc);
-//        String s = new String(Hex.encodeHex(dec)).toUpperCase();
-//        Toast.makeText(this, s, Toast.LENGTH_SHORT).show();
-//    }
+    @Override
+    public String enterPin(int ptc, String amount) {
+        pin = new String();
+        Intent it = new Intent(MainActivity.this, PinpadActivity.class);
+        it.putExtra("ptc", ptc);
+        it.putExtra("amount", amount);
+        synchronized (MainActivity.this) {
+            activityResultLauncher.launch(it);
+            try {
+                MainActivity.this.wait();
+            } catch (Exception ex) {
+                //todo: log error
+            }
+        }
+        return pin;
+    }
+
+    @Override
+    public void transactionResult(boolean result) {
+        runOnUiThread(()-> {
+            Toast.makeText(MainActivity.this, result ? "ok" : "failed", Toast.LENGTH_SHORT).show();
+        });
+    }
 
     public void onButtonClick(View v)
     {
-        Intent it = new Intent(this, PinpadActivity.class);
-//        startActivity(it);
-        activityResultLauncher.launch(it);
+        byte[] trd = stringToHex("9F0206000000000100");
+        transaction(trd);
     }
 
     public static byte[] stringToHex(String s)
@@ -124,4 +125,6 @@ public class MainActivity extends AppCompatActivity {
     public static native byte[] randomBytes(int no);
     public static native byte[] encrypt(byte[] key, byte[] data);
     public static native byte[] decrypt(byte[] key, byte[] data);
+    public native boolean transaction(byte[] trd);
+
 }
