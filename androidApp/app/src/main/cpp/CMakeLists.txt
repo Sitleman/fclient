@@ -50,7 +50,7 @@ target_link_libraries( # Specifies the target library.
 
 add_library(spdlog STATIC IMPORTED)
 set_target_properties(spdlog PROPERTIES IMPORTED_LOCATION
-        /home/nikita/libs/spdlog/build/x86_64/libspdlog.a)
+        /home/nikita/fclient/libs/spdlog/build/x86_64/libspdlog.a)
 
 
 add_library(mbedcrypto SHARED IMPORTED)
@@ -58,5 +58,5 @@ set_target_properties(mbedcrypto PROPERTIES IMPORTED_LOCATION
         ${CMAKE_CURRENT_SOURCE_DIR}/../nativeLibs/x86_64/libmbedcrypto.so)
 
 target_include_directories(fclient PUBLIC
-        /home/nikita/libs/spdlog/spdlog/include
-        /home/nikita/libs/mbedtls/mbedtls/include)
+        /home/nikita/fclient/libs/spdlog/spdlog/include
+        /home/nikita/fclient/libs/mbedtls/mbedtls/include)
