@@ -1,0 +1,5 @@
+libs/spdlog/spdlog/
+libs/mbedtls/mbedtls/
+libs/mbedtls/build/x86_64
+libs/spdlog/build/x86_64
+libs/spdlog/build/arm64-v8a
