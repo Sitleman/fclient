@@ -1,8 +1,11 @@
 package com.example.backend.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
+import java.lang.annotation.ElementType;
+import java.lang.reflect.Method;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -36,6 +39,7 @@ public class User {
     @Column(name = "salt")
     public String salt;
 
+    @JsonIgnore()
     @Column(name = "token")
     public String token;
 
