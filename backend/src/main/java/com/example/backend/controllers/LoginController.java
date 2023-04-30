@@ -15,6 +15,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/auth")
 public class LoginController {
@@ -38,8 +39,8 @@ public class LoginController {
                     u2.activity = LocalDateTime.now();
                     User u3 = userRepository.saveAndFlush(u2);
 
-                    Map<String, String> response = new HashMap<>();
-                    response.put("userid", String.valueOf(u3.id));
+                    Map<String, Object> response = new HashMap<>();
+                    response.put("user", u3);
                     response.put("token", String.valueOf(u3.token));
                     return ResponseEntity.ok(response);
                 }

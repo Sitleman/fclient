@@ -5,6 +5,7 @@ import './App.css';
 
 import NavigationBar from "./components/NavigationBar";
 import Home from "./components/Home";
+import Login from "./components/Login";
 
 class App extends Component {
   render() {
@@ -15,6 +16,7 @@ class App extends Component {
                 <div className="container-fluid">
                     <Routes>
                         <Route path="home" element={<Home />}/>
+                        <Route path="login" element={<Login />}/>
                     </Routes>
                 </div>
             </BrowserRouter>
