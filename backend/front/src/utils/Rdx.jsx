@@ -54,7 +54,7 @@ function authentication(state = initialState, action) {
     console.log("authentication")
     switch (action.type) {
         case userConstants.LOGIN:
-            return { user: action.user };
+            return { user: Utils.getUser() };
         case userConstants.LOGOUT:
             return { };
         default:

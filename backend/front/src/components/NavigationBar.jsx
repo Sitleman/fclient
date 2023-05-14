@@ -7,7 +7,7 @@ import {Link} from 'react-router-dom';
 import Utils from "../utils/Utils";
 import BackendService from "../services/BackendService";
 import {connect} from "react-redux";
-import {userActions} from "../utils/Rdx";
+import {store, userActions} from "../utils/Rdx";
 
 
 class NavigationBarClass extends React.Component {
@@ -24,14 +24,12 @@ class NavigationBarClass extends React.Component {
     logout() {
         BackendService.logout()
             .then(() => {
-                Utils.removeUser();
-                this.props.dispatch(userActions.logout())
+                store.dispatch(userActions.logout())
                 this.props.navigate('Login');
             })
     }
 
     render() {
-        let uname = Utils.getUserName();
         return (
             <Navbar bg="light" expand="lg">
                 <Navbar.Brand><FontAwesomeIcon icon={faHome} />{' '}My RPO</Navbar.Brand>
@@ -67,4 +65,4 @@ const mapStateToProps = state => {
     return { user };
 }
 
-export default  connect(mapStateToProps)(NavigationBar);
+export default connect(mapStateToProps)(NavigationBar);

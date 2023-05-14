@@ -1,10 +1,10 @@
 import BackendService from "../services/BackendService";
-import Utils from "../utils/Utils";
 import {useNavigate} from "react-router-dom";
 import {useState} from "react";
 import React, { Component }  from 'react';
-import {connect} from 'react-redux';
+import {connect, useDispatch} from 'react-redux';
 import {store, userActions} from "../utils/Rdx";
+import navigationBar from "./NavigationBar";
 
 export default connect()(function Login() {
     const [username, setUsername] = useState('');
@@ -12,6 +12,7 @@ export default connect()(function Login() {
     const [loggingIn, setLoggingIn] = useState(false);
     const [submitted, setSubmitted] = useState(false);
     const nav = useNavigate();
+    const dispatch = useDispatch();
 
     function handleChangeLogin(e) {
         setUsername(e.target.value);
@@ -21,6 +22,7 @@ export default connect()(function Login() {
         setPassword(e.target.value);
     }
 
+
     function handleSubmit(e) {
         e.preventDefault();
         setSubmitted(true);
@@ -29,7 +31,7 @@ export default connect()(function Login() {
             .then ( resp => {
                 console.log(resp.data);
                 setLoggingIn(false);
-                store.dispatch(userActions.login(resp.data))
+                dispatch(userActions.login(resp.data))
                 nav("/home");
             })
             .catch( err => {
