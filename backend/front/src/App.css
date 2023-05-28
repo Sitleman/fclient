@@ -22,3 +22,26 @@
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+
+.wrapper {
+  display: flex;
+  align-items: stretch;
+}
+
+.my-sidebar {
+  min-height: 100vh;
+  background: #ECF0F1;
+  color: #ECF0F1;
+}
+
+.my-sidebar-expanded {
+  transition: 0.5s;
+  min-width: 200px;
+  max-width: 200px;
+}
+
+.my-sidebar-collapsed {
+  transition: 0.5s;
+  min-width: 62px;
+  max-width: 62px;
+}
