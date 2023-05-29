@@ -18,7 +18,7 @@ class BackendService {
     /* Countries */
 
     retrieveAllCountries(page, limit) {
-        return axios.get(`${API_URL}/countries`, {});
+        return axios.get(`${API_URL}/countries?page=${page}&limit=${limit}`);
     }
 
     retrieveCountry(id) {

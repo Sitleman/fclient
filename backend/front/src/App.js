@@ -10,6 +10,7 @@ import Utils from "./utils/Utils";
 import {connect} from "react-redux";
 import SideBar from "./components/SideBar";
 import CountryListComponent from "./components/CountryListComponent";
+import CountryComponent from "./components/CountryComponent";
 
 const ProtectedRoute = ({children}) => {
     let user = Utils.getUser();
@@ -34,6 +35,7 @@ const App = props => {
                             <Route path="login" element={<Login />}/>
                             <Route path="home" element={<ProtectedRoute><Home/></ProtectedRoute>}/>
                             <Route path="countries" element={<ProtectedRoute><CountryListComponent/></ProtectedRoute>}/>
+                            <Route path="countries/:id" element={<ProtectedRoute><CountryComponent/></ProtectedRoute>}/>
                         </Routes>
                     </div>
                 </div>
