@@ -35,6 +35,9 @@ public class User {
     @Column(name = "password")
     public String password;
 
+    @Transient
+    public String np;
+
     @JsonIgnore
     @Column(name = "salt")
     public String salt;
